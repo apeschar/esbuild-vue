@@ -2,6 +2,12 @@
 
 This plugin lets you import [Vue single-file components][sfc] when bundling with [esbuild]. This plugin works with Vue 2.
 
+## Installation
+
+~~~
+yarn add esbuild-vue
+~~~
+
 ## Getting started
 
 In order to use esbuild plugins, you must use esbuild's JavaScript API, instead of the command line.
