@@ -1,11 +1,13 @@
-import vuePlugin from "../src/index.js";
-import esbuild from "esbuild";
-import { dirname, resolve } from "path";
-
-const root = dirname(__filename);
-
-test("expects importing Vue SFC to work", () => {
-  esbuild.build({
-    entryPoints: resolve(root, "inputs/main.js"),
+test("expects importing Vue SFC to work", async () => {
+  const result = await require("esbuild").build({
+    bundle: true,
+    entryPoints: ["test/input/main.js"],
+    plugins: [require("../src/index.js")()],
+    write: false
   });
+
+  expect(result.outputFiles).toHaveLength(1);
+  expect(String.fromCodePoint(...result.outputFiles[0].contents)).toContain(
+    "Hello, World!"
+  );
 });
