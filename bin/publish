@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+version="$(git describe --tags --exact-match HEAD)"
+
+tmp="$(mktemp -d)"
+cleanup() { rm -rf "$tmp"; }
+trap cleanup EXIT
+
+git archive "$version" -- README.md src/ | tar x -C "$tmp"
+git show "$version:./package.json" | jq --arg v "$version" '.version = $v' > "$tmp/package.json"
+
+cd "$tmp"
+npm publish
