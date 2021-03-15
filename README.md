@@ -2,6 +2,8 @@
 
 This plugin lets you import [Vue single-file components][sfc] when bundling with [esbuild]. This plugin works with Vue 2.
 
+Multiple Vue imports are built in parallel using Node.js' worker_threads via [Piscina].
+
 ## Installation
 
 ~~~
@@ -69,5 +71,20 @@ Now, loading `index.html` should display your component in its full glory.
 <script src="out.js"></script>
 ~~~
 
+## Configuration
+
+An object containing configuration options may be passed into the plugin constructor `vuePlugin`. For example:
+
+~~~
+vuePlugin({
+    workers: false
+})
+~~~
+
+The following option is available:
+
+* `workers`: The maximum amount of worker threads to use for compilation. By default this is 4 or the amount of CPUs available, whichever is least. (During my testing, larger amounts of threads don't provide a performance improvement.) Use `false` to disable multithreading.
+
 [sfc]: https://vuejs.org/v2/guide/single-file-components.html
 [esbuild]: https://esbuild.github.io/
+[Piscina]: https://www.npmjs.com/package/piscina
