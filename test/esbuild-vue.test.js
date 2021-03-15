@@ -11,3 +11,15 @@ test("expects importing Vue SFC to work", async () => {
     "Hello, World!"
   );
 });
+
+test("expects importing SFCs with syntax errors to fail", async () => {
+  await expect(
+    require("esbuild").build({
+      bundle: true,
+      entryPoints: ["test/input/BrokenComponent.vue"],
+      plugins: [require("../src/index.js")()],
+      write: false,
+      logLevel: "silent"
+    })
+  ).rejects.toThrow(/has no matching end tag/);
+});
