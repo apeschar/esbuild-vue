@@ -1,6 +1,14 @@
 {
   "name": "esbuild-vue",
   "version": "0.0.1",
+  "author": "Albert Peschar <albert@peschar.net> (https://peschar.net)",
+  "license": "ISC",
+  "repository": "github:apeschar/esbuild-vue",
+  "homepage": "https://github.com/apeschar/esbuild-vue",
+  "bugs": {
+    "url": "https://github.com/apeschar/esbuild-vue/issues"
+  },
+  "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },
