@@ -23,3 +23,12 @@ test("expects importing SFCs with syntax errors to fail", async () => {
     })
   ).rejects.toThrow(/has no matching end tag/);
 });
+
+test("expects building without threads to work", async () => {
+  const result = await require("esbuild").build({
+    bundle: true,
+    entryPoints: ["test/input/main.js"],
+    plugins: [require("../src/index.js")({ workers: false })],
+    write: false
+  });
+});
