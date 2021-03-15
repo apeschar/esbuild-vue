@@ -1,8 +1,15 @@
 {
+  "type": "module",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
   "dependencies": {
-    "@vue/component-compiler": "^4.2.3"
+    "@vue/component-compiler": "^4.2.3",
+    "vue-template-compiler": "^2.6.12"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "babel-jest": "^26.6.3",
     "esbuild": "^0.9.2",
     "jest": "^26.6.3"
   }
