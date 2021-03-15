@@ -5,6 +5,8 @@ cd "$(dirname "$0")/.."
 
 version="$(git describe --tags --exact-match HEAD)"
 
+git push origin HEAD --tags
+
 tmp="$(mktemp -d)"
 cleanup() { rm -rf "$tmp"; }
 trap cleanup EXIT
