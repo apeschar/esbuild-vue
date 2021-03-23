@@ -3,7 +3,7 @@ test("expects importing Vue SFC to work", async () => {
     bundle: true,
     entryPoints: ["test/input/main.js"],
     plugins: [require("../src/index.js")()],
-    write: false
+    write: false,
   });
 
   expect(result.outputFiles).toHaveLength(1);
@@ -19,7 +19,7 @@ test("expects importing SFCs with syntax errors to fail", async () => {
       entryPoints: ["test/input/BrokenComponent.vue"],
       plugins: [require("../src/index.js")()],
       write: false,
-      logLevel: "silent"
+      logLevel: "silent",
     })
   ).rejects.toThrow(/has no matching end tag/);
 });
@@ -29,6 +29,15 @@ test("expects building without threads to work", async () => {
     bundle: true,
     entryPoints: ["test/input/main.js"],
     plugins: [require("../src/index.js")({ workers: false })],
-    write: false
+    write: false,
+  });
+});
+
+test("expects building empty components to work", async () => {
+  await require("esbuild").build({
+    bundle: true,
+    entryPoints: ["test/input/Empty.vue"],
+    plugins: [require("../src/index.js")({ workers: false })],
+    write: false,
   });
 });
