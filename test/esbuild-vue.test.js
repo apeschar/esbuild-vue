@@ -41,3 +41,15 @@ test("expects building empty components to work", async () => {
     write: false,
   });
 });
+
+test("expects style errors to be propagated", async () => {
+  await expect(
+    require("esbuild").build({
+      bundle: true,
+      entryPoints: ["test/input/StyleErrors.vue"],
+      plugins: [require("../src/index.js")({ workers: false })],
+      write: false,
+      logLevel: "silent",
+    })
+  ).rejects.toThrow(/Expected string/);
+});
