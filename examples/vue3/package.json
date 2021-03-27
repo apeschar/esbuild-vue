@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "esbuild": "^0.10.2",
+    "esbuild-vue": "^0.3.0",
+    "vue": "^3.0.8"
+  }
+}
