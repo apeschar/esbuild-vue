@@ -1,14 +1,40 @@
+let usedFiles;
+let requireDepth = 0;
+
+editModule("module", (mdl) => {
+  mdl.prototype.require = new Proxy(mdl.prototype.require, {
+    apply(target, thisArg, args) {
+      requireDepth++;
+      try {
+        return Reflect.apply(target, thisArg, args);
+      } finally {
+        requireDepth--;
+      }
+    },
+  });
+});
+
+editModule("fs", (fs) => {
+  fs.readFileSync = new Proxy(fs.readFileSync, {
+    apply(target, thisArg, args) {
+      if (usedFiles && requireDepth === 0) usedFiles.add(args[0]);
+      return Reflect.apply(target, thisArg, args);
+    },
+  });
+});
+
 const componentCompiler = require("@vue/component-compiler");
 
-module.exports = async ({ filename, source }) => {
+module.exports = async ({ filename, source, trackUsedFiles }) => {
   const compiler = componentCompiler.createDefaultCompiler();
+  usedFiles = new Set();
   const result = compiler.compileToDescriptor(filename, source);
   const resultErrors = combineErrors(result.template, ...result.styles);
   if (resultErrors.length > 0) {
-    return { errors: resultErrors };
+    return { result: { errors: resultErrors }, usedFiles };
   }
   const output = componentCompiler.assemble(compiler, source, result, {});
-  return { contents: output.code };
+  return { result: { contents: output.code }, usedFiles };
 };
 
 function combineErrors(...outputs) {
@@ -30,4 +56,8 @@ function convertError(e) {
     return { text: e.message };
   }
   throw new Error(`Cannot convert Vue compiler error: ${e}`);
+}
+
+function editModule(name, fn) {
+  fn(require(name));
 }

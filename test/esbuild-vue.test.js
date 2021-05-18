@@ -53,3 +53,20 @@ test("expects style errors to be propagated", async () => {
     })
   ).rejects.toThrow(/Expected string/);
 });
+
+test("expects used files to be tracked", async () => {
+  const files = [];
+
+  await require("esbuild").build({
+    bundle: true,
+    entryPoints: ["test/input/StyleImport.vue"],
+    plugins: [
+      require("../src/index.js")({
+        onReadFile: (f) => files.push(f),
+      }),
+    ],
+    write: false,
+  });
+
+  expect(files).toHaveLength(1);
+});
