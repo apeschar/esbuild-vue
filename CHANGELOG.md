@@ -1,5 +1,9 @@
 # Change log
 
+## 0.3.1 - 2021-05-18
+
+* Add `onReadFile` for tracking dependencies.
+
 ## 0.3.0 - 2021-03-23
 
 * Fail build when `<style>` element contains errors.
