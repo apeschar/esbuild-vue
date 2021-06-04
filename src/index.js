@@ -23,6 +23,9 @@ module.exports = function ({ workers = true, onReadFile } = {}) {
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
         const filename = relative(process.cwd(), path);
         const source = await fs.promises.readFile(path, "utf8");
+        if (!source) {
+          throw new Error(`imported sfc ${filename} is empty`);
+        }
         const { result, usedFiles } = await runTask({
           filename,
           source,
