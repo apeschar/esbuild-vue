@@ -70,3 +70,14 @@ test("expects used files to be tracked", async () => {
 
   expect(files).toHaveLength(1);
 });
+
+test("expects empty file to cause error", async () => {
+  await expect(
+    require("esbuild").build({
+      bundle: true,
+      entryPoints: ["test/input/EmptyFile.vue"],
+      plugins: [require("../src/index.js")({ workers: false })],
+      write: false,
+    })
+  ).rejects.toThrow(/Could not compile/);
+});

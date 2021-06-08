@@ -28,13 +28,24 @@ const componentCompiler = require("@vue/component-compiler");
 module.exports = async ({ filename, source, trackUsedFiles }) => {
   const compiler = componentCompiler.createDefaultCompiler();
   usedFiles = new Set();
-  const result = compiler.compileToDescriptor(filename, source);
-  const resultErrors = combineErrors(result.template, ...result.styles);
-  if (resultErrors.length > 0) {
-    return { result: { errors: resultErrors }, usedFiles };
+  try {
+    const result = compiler.compileToDescriptor(filename, source);
+    const resultErrors = combineErrors(result.template, ...result.styles);
+    if (resultErrors.length > 0) {
+      return { result: { errors: resultErrors }, usedFiles };
+    }
+    const output = componentCompiler.assemble(compiler, source, result, {});
+    return { result: { contents: output.code }, usedFiles };
+  } catch (e) {
+    return {
+      result: {
+        errors: [
+          { text: "Could not compile Vue single-file component", detail: e },
+        ],
+      },
+      usedFiles,
+    };
   }
-  const output = componentCompiler.assemble(compiler, source, result, {});
-  return { result: { contents: output.code }, usedFiles };
 };
 
 function combineErrors(...outputs) {
