@@ -78,6 +78,7 @@ test("expects empty file to cause error", async () => {
       entryPoints: ["test/input/EmptyFile.vue"],
       plugins: [require("../src/index.js")({ workers: false })],
       write: false,
+      logLevel: "silent",
     })
   ).rejects.toThrow(/Could not compile.*File is empty/);
 });
