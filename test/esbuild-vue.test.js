@@ -79,5 +79,5 @@ test("expects empty file to cause error", async () => {
       plugins: [require("../src/index.js")({ workers: false })],
       write: false,
     })
-  ).rejects.toThrow(/Could not compile/);
+  ).rejects.toThrow(/Could not compile.*File is empty/);
 });

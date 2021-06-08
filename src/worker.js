@@ -29,6 +29,9 @@ module.exports = async ({ filename, source, trackUsedFiles }) => {
   const compiler = componentCompiler.createDefaultCompiler();
   usedFiles = new Set();
   try {
+    if (/^\s*$/.test(source)) {
+      throw new Error("File is empty");
+    }
     const result = compiler.compileToDescriptor(filename, source);
     const resultErrors = combineErrors(result.template, ...result.styles);
     if (resultErrors.length > 0) {
