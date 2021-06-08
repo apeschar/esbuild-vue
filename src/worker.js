@@ -40,7 +40,10 @@ module.exports = async ({ filename, source, trackUsedFiles }) => {
     return {
       result: {
         errors: [
-          { text: "Could not compile Vue single-file component", detail: e },
+          {
+            text: `Could not compile Vue single-file component: ${e}`,
+            detail: e,
+          },
         ],
       },
       usedFiles,
