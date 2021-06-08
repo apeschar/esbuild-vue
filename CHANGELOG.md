@@ -1,5 +1,10 @@
 # Change log
 
+## 0.3.2 - 2021-06-08
+
+* Correctly propagate Vue component compiler exceptions to esbuild log.
+* Detect empty input files so we get a clearer error message.
+
 ## 0.3.1 - 2021-05-18
 
 * Add `onReadFile` for tracking dependencies.
