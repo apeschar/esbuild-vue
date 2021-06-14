@@ -1,5 +1,10 @@
 # Change log
 
+## 0.3.3 - 2021-06-14
+
+* `vue-template-compiler` is now a peer dependency to avoid version conflicts
+  with Vue.
+
 ## 0.3.2 - 2021-06-08
 
 * Correctly propagate Vue component compiler exceptions to esbuild log.
