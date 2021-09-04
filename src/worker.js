@@ -25,30 +25,50 @@ editModule("fs", (fs) => {
 
 const componentCompiler = require("@vue/component-compiler");
 
-module.exports = async ({ filename, source, trackUsedFiles }) => {
-  const compiler = componentCompiler.createDefaultCompiler();
+module.exports = async ({
+  filename,
+  source,
+  trackUsedFiles,
+  extractCss,
+  production,
+}) => {
+  const compilerOptions = production
+    ? { template: { isProduction: true } }
+    : {};
+  const compiler = componentCompiler.createDefaultCompiler(compilerOptions);
   usedFiles = new Set();
   try {
     if (/^\s*$/.test(source)) {
       throw new Error("File is empty");
     }
     const result = compiler.compileToDescriptor(filename, source);
+    let styles = [];
+
     const resultErrors = combineErrors(result.template, ...result.styles);
     if (resultErrors.length > 0) {
-      return { result: { errors: resultErrors }, usedFiles };
+      return { errors: resultErrors, usedFiles };
     }
-    const output = componentCompiler.assemble(compiler, source, result, {});
-    return { result: { contents: output.code }, usedFiles };
+    if (extractCss) {
+      styles = result.styles.map(({ code, scoped, media, module }) => ({
+        code,
+        scoped,
+        media,
+        module,
+      }));
+      result.styles = result.styles.map((style) =>
+        Object.assign(style, { code: "" })
+      );
+    }
+    const { code } = componentCompiler.assemble(compiler, source, result, {});
+    return { code, styles, usedFiles };
   } catch (e) {
     return {
-      result: {
-        errors: [
-          {
-            text: `Could not compile Vue single-file component: ${e}`,
-            detail: e,
-          },
-        ],
-      },
+      errors: [
+        {
+          text: `Could not compile Vue single-file component: ${e}`,
+          detail: e,
+        },
+      ],
       usedFiles,
     };
   }

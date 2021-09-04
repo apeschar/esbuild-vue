@@ -8,19 +8,24 @@
     "url": "https://github.com/apeschar/esbuild-vue/issues"
   },
   "main": "src/index.js",
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
     "@vue/component-compiler": "^4.2.4",
-    "piscina": "^2.2.0"
+    "piscina": "^2.2.0",
+    "postcss": ">=6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "babel-jest": "^26.6.3",
     "esbuild": "^0.9.2",
     "jest": "^26.6.3",
-    "prettier": "^2.3.0"
+    "prettier": "^2.3.2",
+    "vue-template-compiler": "^2.6.12"
   },
   "peerDependencies": {
     "vue-template-compiler": "^2.6.12"
