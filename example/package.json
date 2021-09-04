@@ -1,0 +1,17 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -fr dist && NODE_ENV=production node ./build.js",
+    "serve": "http-server . -c-1"
+  },
+  "dependencies": {
+    "esbuild": "^0.12.25",
+    "http-server": "^13.0.1",
+    "normalize.css": "^8.0.1",
+    "vue": "2",
+    "vue-template-compiler": "2"
+  }
+}
