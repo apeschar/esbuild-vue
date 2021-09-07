@@ -1,5 +1,10 @@
 # Change log
 
+## 0.4.0 - 2021-09-07
+
+- Add `extractCss` to allow generating a separate CSS file instead of inlining
+  styles in the generated JavaScript.
+
 ## 0.3.3 - 2021-06-14
 
 - `vue-template-compiler` is now a peer dependency to avoid version conflicts
@@ -21,7 +26,7 @@
 
 ## 0.2.0 - 2021-03-15
 
-- Parallelize compilation via worker_thread.
+- Parallelize compilation via `worker_thread`.
 
 ## 0.1.0 - 2021-03-15
 
