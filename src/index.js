@@ -1,5 +1,10 @@
 const { resolve, relative } = require("path");
 const fs = require("fs");
+const escapeRegExp = require("lodash.escaperegexp");
+
+const EXTRACT_CSS_NAMESPACE = "esbuild-vue-css";
+const EXTRACT_CSS_SUFFIX = "?" + EXTRACT_CSS_NAMESPACE;
+const EXTRACT_CSS_REGEXP = new RegExp(`${escapeRegExp(EXTRACT_CSS_SUFFIX)}$`);
 
 module.exports = function ({
   workers = true,
@@ -30,6 +35,7 @@ module.exports = function ({
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
         const filename = relative(process.cwd(), path);
         const source = await fs.promises.readFile(path, "utf8");
+
         let { code, styles, errors, usedFiles } = await runTask({
           filename,
           source,
@@ -37,10 +43,8 @@ module.exports = function ({
           production,
         });
 
-        if (extractCss && Array.isArray(styles) && styles.length) {
-          const cssPath = filename
-            .replace(".vue", ".esbuild-vue-css")
-            .replace(/\\/g, "/");
+        if (extractCss && styles && styles.length) {
+          const cssPath = filename + EXTRACT_CSS_SUFFIX;
           cssCode.set(
             cssPath,
             styles.reduce((str, { code }) => str + code, "")
@@ -48,33 +52,35 @@ module.exports = function ({
           code += `\nimport ${JSON.stringify(cssPath)};`;
         }
 
-        for (const file of usedFiles) {
-          if (onReadFile) {
+        if (onReadFile) {
+          for (const file of usedFiles) {
             await onReadFile(file);
           }
         }
-        if (errors && errors.length > 0) {
-          return {
-            errors,
-          };
+
+        if (errors && errors.length) {
+          return { errors };
         }
-        return {
-          contents: code,
-        };
+
+        return { contents: code };
       });
 
-      //if the css exists in our map, then output it with the css loader
-      build.onResolve({ filter: /\.esbuild-vue-css$/ }, ({ path }) => {
-        return { path, namespace: "vuecss" };
-      });
+      if (extractCss) {
+        build.onResolve({ filter: EXTRACT_CSS_REGEXP }, ({ path }) => {
+          return { path, namespace: EXTRACT_CSS_NAMESPACE };
+        });
 
-      build.onLoad(
-        { filter: /\.esbuild-vue-css$/, namespace: "vuecss" },
-        ({ path }) => {
-          const css = cssCode.get(path);
-          return css ? { contents: css, loader: "css" } : null;
-        }
-      );
+        build.onLoad(
+          { filter: EXTRACT_CSS_REGEXP, namespace: EXTRACT_CSS_NAMESPACE },
+          ({ path }) => {
+            const css = cssCode.get(path);
+            if (!css) {
+              return null;
+            }
+            return { contents: css, loader: "css" };
+          }
+        );
+      }
     },
   };
 };

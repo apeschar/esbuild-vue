@@ -42,27 +42,24 @@ module.exports = async ({
       throw new Error("File is empty");
     }
     const result = compiler.compileToDescriptor(filename, source);
-    let styles = [];
+    let styles;
 
     const resultErrors = combineErrors(result.template, ...result.styles);
     if (resultErrors.length > 0) {
       return { errors: resultErrors, usedFiles };
     }
+
     if (extractCss) {
-      styles = result.styles.map(({ code, scoped, media, module }) => ({
-        code,
-        scoped,
-        media,
-        module,
-      }));
-      // remove the style code to prevent it from being injected
-      // in the JS bundle
-      // but keep it as reference to preserve scopeId value
+      styles = result.styles.map(({ code }) => ({ code }));
+      // Remove the style code to prevent it from being injected
+      // in the JS bundle, but keep it as reference to preserve scopeId value.
       for (const style of result.styles) {
         style.code = "";
       }
     }
+
     const { code } = componentCompiler.assemble(compiler, source, result, {});
+
     return { code, styles, usedFiles };
   } catch (e) {
     return {
