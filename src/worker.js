@@ -55,9 +55,12 @@ module.exports = async ({
         media,
         module,
       }));
-      result.styles = result.styles.map((style) =>
-        Object.assign(style, { code: "" })
-      );
+      // remove the style code to prevent it from being injected
+      // in the JS bundle
+      // but keep it as reference to preserve scopeId value
+      for (const style of result.styles) {
+        style.code = "";
+      }
     }
     const { code } = componentCompiler.assemble(compiler, source, result, {});
     return { code, styles, usedFiles };
