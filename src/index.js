@@ -38,14 +38,14 @@ module.exports = function ({
         });
 
         if (extractCss && Array.isArray(styles) && styles.length) {
-          let cssPath = filename
+          const cssPath = filename
             .replace(".vue", ".esbuild-vue-css")
             .replace(/\\/g, "/");
           cssCode.set(
             cssPath,
             styles.reduce((str, { code }) => str + code, "")
           );
-          code = code + `\nimport "${cssPath}";`;
+          code += `\nimport "${JSON.stringify(cssPath)}";`;
         }
 
         for (const file of usedFiles) {
