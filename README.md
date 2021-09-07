@@ -77,6 +77,7 @@ An object containing configuration options may be passed into the plugin constru
 
 ```
 vuePlugin({
+    extractCss: true,
     workers: false,
     onReadFile: path => {
         console.error("The following dependency was used:", path);
@@ -86,6 +87,7 @@ vuePlugin({
 
 The following options are available:
 
+- `extractCss`: Output a separate file for inline `<style>` blocks in single-file components.
 - `workers`: The maximum amount of worker threads to use for compilation. By default this is 4 or the amount of CPUs available, whichever is least. (During my testing, larger amounts of threads don't provide a performance improvement.) Use `false` to disable multithreading.
 - `onReadFile`: Will be called with the (non-normalized) paths of every file read during the compilation process. For example, external files included using `@import` declarations in `<style>` blocks.
 
