@@ -45,7 +45,7 @@ module.exports = function ({
             cssPath,
             styles.reduce((str, { code }) => str + code, "")
           );
-          code += `\nimport "${JSON.stringify(cssPath)}";`;
+          code += `\nimport ${JSON.stringify(cssPath)};`;
         }
 
         for (const file of usedFiles) {
