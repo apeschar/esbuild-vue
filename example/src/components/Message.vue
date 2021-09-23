@@ -1,10 +1,17 @@
-<template>
-  <p class="Message">{{ msg }}</p>
+<template lang="pug">
+  .Message {{ uppercaseMsg }}
 </template>
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   props: ["msg"],
-};
+  computed: {
+    uppercaseMsg(): string {
+      return this.msg.toUpperCase()
+    }
+  }
+});
 </script>
 <style scoped>
 .Message {

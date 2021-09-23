@@ -24,6 +24,7 @@ editModule("fs", (fs) => {
 });
 
 const componentCompiler = require("@vue/component-compiler");
+const { parse } = require("@vue/component-compiler-utils");
 
 module.exports = async ({
   filename,
@@ -43,7 +44,13 @@ module.exports = async ({
     }
     const result = compiler.compileToDescriptor(filename, source);
     let styles;
-
+    const { script } = parse({
+      source,
+      filename,
+      needMap: true,
+      compiler: require("vue-template-compiler"),
+    });
+    const scriptLoader = (script.attrs && script.attrs.lang) || "js";
     const resultErrors = combineErrors(result.template, ...result.styles);
     if (resultErrors.length > 0) {
       return { errors: resultErrors, usedFiles };
@@ -59,8 +66,7 @@ module.exports = async ({
     }
 
     const { code } = componentCompiler.assemble(compiler, source, result, {});
-
-    return { code, styles, usedFiles };
+    return { code, styles, usedFiles, scriptLoader };
   } catch (e) {
     return {
       errors: [

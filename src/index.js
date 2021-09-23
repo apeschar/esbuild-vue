@@ -35,8 +35,7 @@ module.exports = function ({
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
         const filename = relative(process.cwd(), path);
         const source = await fs.promises.readFile(path, "utf8");
-
-        let { code, styles, errors, usedFiles } = await runTask({
+        let { code, styles, errors, usedFiles, scriptLoader } = await runTask({
           filename,
           source,
           extractCss,
@@ -61,8 +60,10 @@ module.exports = function ({
         if (errors && errors.length) {
           return { errors };
         }
-
-        return { contents: code };
+        return {
+          contents: code,
+          loader: scriptLoader,
+        };
       });
 
       if (extractCss) {
