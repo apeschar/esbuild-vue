@@ -25,6 +25,7 @@ editModule("fs", (fs) => {
 
 const componentCompiler = require("@vue/component-compiler");
 const { parse } = require("@vue/component-compiler-utils");
+const strip = require("strip-comments");
 
 module.exports = async ({
   filename,
@@ -50,6 +51,7 @@ module.exports = async ({
       needMap: true,
       compiler: require("vue-template-compiler"),
     });
+    result.script.code = strip(result.script.code);
     const scriptLoader = (script.attrs && script.attrs.lang) || "js";
     const resultErrors = combineErrors(result.template, ...result.styles);
     if (resultErrors.length > 0) {

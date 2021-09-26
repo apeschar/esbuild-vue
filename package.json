@@ -16,10 +16,11 @@
   },
   "dependencies": {
     "@vue/component-compiler": "^4.2.4",
-    "lodash.escaperegexp": "^4.1.2",
     "@vue/component-compiler-utils": "^3.2.2",
+    "lodash.escaperegexp": "^4.1.2",
     "piscina": "^2.2.0",
-    "postcss": ">=6.0.0"
+    "postcss": ">=6.0.0",
+    "strip-comments": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
