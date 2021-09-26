@@ -1,14 +1,18 @@
 (async function () {
+  const { resolve } = require("path");
   const result = await require("esbuild").build({
     bundle: true,
-    entryPoints: ["src/main.js"],
+    entryPoints: [resolve(__dirname, "src/main.js")],
     format: "esm",
     splitting: true,
-    minify: true,
-    external: ["vue"],
+    minify: false,
     plugins: [
-      require("../src/index.js")({ extractCss: true, production: true }),
+      require("../src/index.js")({
+        extractCss: true,
+        workers: false,
+        production: false,
+      }),
     ],
-    outdir: "dist",
+    outdir: resolve(__dirname, "dist"),
   });
 })();
