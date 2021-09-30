@@ -24,7 +24,7 @@ test("expects CSS to be extracted", async () => {
   const css = String.fromCodePoint(...result.outputFiles[1].contents);
 
   expect(result.outputFiles).toHaveLength(2);
-  expect(result.outputFiles[1].path).toMatch(/[\/\\]main-styles\.css$/);
+  expect(result.outputFiles[1].path).toMatch(/[/\\]main-styles\.css$/);
   expect(css).toContain("body {");
   expect(css).toContain(".MyComponent[data-v-");
   expect(css).toContain(".Hello[data-v-");
