@@ -1,5 +1,9 @@
 # Change log
 
+## 0.4.1 - 2021-11-23
+
+- Output a code fragment for template errors.
+
 ## 0.4.0 - 2021-09-07
 
 - Add `extractCss` to allow generating a separate CSS file instead of inlining
