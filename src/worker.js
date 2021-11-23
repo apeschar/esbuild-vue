@@ -25,6 +25,8 @@ editModule("fs", (fs) => {
 
 const componentCompiler = require("@vue/component-compiler");
 
+const generateCodeFrame = require("vue-template-compiler").generateCodeFrame;
+
 module.exports = async ({
   filename,
   source,
@@ -32,9 +34,12 @@ module.exports = async ({
   extractCss,
   production,
 }) => {
-  const compilerOptions = production
-    ? { template: { isProduction: true } }
-    : {};
+  const compilerOptions = {
+    template: {
+      isProduction: production,
+      compilerOptions: { outputSourceRange: true },
+    },
+  };
   const compiler = componentCompiler.createDefaultCompiler(compilerOptions);
   usedFiles = new Set();
   try {
@@ -44,7 +49,7 @@ module.exports = async ({
     const result = compiler.compileToDescriptor(filename, source);
     let styles;
 
-    const resultErrors = combineErrors(result.template, ...result.styles);
+    const resultErrors = getErrors(result);
     if (resultErrors.length > 0) {
       return { errors: resultErrors, usedFiles };
     }
@@ -74,7 +79,28 @@ module.exports = async ({
   }
 };
 
-function combineErrors(...outputs) {
+function getErrors(result) {
+  let errors = [];
+  if (result.template && result.template.errors) {
+    errors = errors.concat(getTemplateErrors(result.template));
+  }
+  if (result.styles) {
+    errors = errors.concat(combineErrors(result.styles));
+  }
+  return errors;
+}
+
+function getTemplateErrors(template) {
+  if (!template.errors) {
+    return [];
+  }
+  return template.errors.map((e) => ({
+    text: e.msg + "\n\n" + generateCodeFrame(template.source, e.start, e.end),
+    detail: e,
+  }));
+}
+
+function combineErrors(outputs) {
   return outputs
     .map((o) => {
       if (!o || !o.errors) {
@@ -90,7 +116,7 @@ function convertError(e) {
     return { text: e };
   }
   if (e instanceof Error) {
-    return { text: e.message };
+    return { text: e.message, detail: e };
   }
   throw new Error(`Cannot convert Vue compiler error: ${e}`);
 }

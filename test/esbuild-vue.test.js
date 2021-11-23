@@ -39,7 +39,7 @@ test("expects importing SFCs with syntax errors to fail", async () => {
       write: false,
       logLevel: "silent",
     })
-  ).rejects.toThrow(/has no matching end tag/);
+  ).rejects.toThrow(/has no matching end tag[\s\S]*<script>/);
 });
 
 test("expects building without threads to work", async () => {
