@@ -104,3 +104,33 @@ test("expects empty file to cause error", async () => {
     })
   ).rejects.toThrow(/Could not compile.*File is empty/);
 });
+
+test("expects using PostCSS plugins to work", async () => {
+  const url = require("postcss-url");
+
+  const result = await require("esbuild").build({
+    bundle: true,
+    entryPoints: ["test/input/RelativeUrl.vue"],
+    plugins: [
+      require("../src/index.js")({
+        postcssPlugins: [
+          url({
+            url: (asset) => {
+              return new URL(
+                asset.url,
+                new URL("http://my-root-url/")
+              ).toString();
+            },
+          }),
+        ],
+        isAsync: true,
+      }),
+    ],
+    write: false,
+  });
+
+  expect(result.outputFiles).toHaveLength(1);
+  expect(String.fromCodePoint(...result.outputFiles[0].contents)).toContain(
+    "url(http://my-root-url/some-file.jpg)"
+  );
+});

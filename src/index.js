@@ -11,10 +11,12 @@ module.exports = function ({
   extractCss = false,
   production = process.env.NODE_ENV === "production",
   onReadFile,
+  postcssPlugins = [],
+  isAsync = false,
 } = {}) {
   let runTask;
 
-  if (!workers) {
+  if (!workers || postcssPlugins.length > 0) {
     runTask = require("./worker.js");
   } else {
     const piscina = new (require("piscina"))({
@@ -41,6 +43,8 @@ module.exports = function ({
           source,
           extractCss,
           production,
+          postcssPlugins,
+          isAsync,
         });
 
         if (extractCss && styles && styles.length) {

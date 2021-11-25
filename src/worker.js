@@ -33,11 +33,16 @@ module.exports = async ({
   trackUsedFiles,
   extractCss,
   production,
+  postcssPlugins,
+  isAsync,
 }) => {
   const compilerOptions = {
     template: {
       isProduction: production,
       compilerOptions: { outputSourceRange: true },
+    },
+    style: {
+      postcssPlugins,
     },
   };
   const compiler = componentCompiler.createDefaultCompiler(compilerOptions);
@@ -46,7 +51,9 @@ module.exports = async ({
     if (/^\s*$/.test(source)) {
       throw new Error("File is empty");
     }
-    const result = compiler.compileToDescriptor(filename, source);
+    const result = isAsync
+      ? await compiler.compileToDescriptorAsync(filename, source)
+      : compiler.compileToDescriptor(filename, source);
     let styles;
 
     const resultErrors = getErrors(result);

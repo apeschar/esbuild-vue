@@ -1,5 +1,9 @@
 # Change log
 
+## 1.0.0 - 2021-11-25
+
+- Add support for PostCSS plugins.
+
 ## 0.4.1 - 2021-11-23
 
 - Output a code fragment for template errors.
