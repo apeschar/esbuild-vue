@@ -78,7 +78,12 @@ module.exports = async ({
 
     const { code } = componentCompiler.assemble(compiler, source, result, {});
 
-    return { code, styles, usedFiles };
+    return {
+      code,
+      styles,
+      usedFiles,
+      loader: result.script?.lang,
+    };
   } catch (e) {
     return {
       errors: [

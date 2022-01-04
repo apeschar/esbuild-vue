@@ -38,7 +38,7 @@ module.exports = function ({
         const filename = relative(process.cwd(), path);
         const source = await fs.promises.readFile(path, "utf8");
 
-        let { code, styles, errors, usedFiles } = await runTask({
+        let { code, styles, errors, usedFiles, loader } = await runTask({
           filename,
           source,
           extractCss,
@@ -66,7 +66,7 @@ module.exports = function ({
           return { errors };
         }
 
-        return { contents: code };
+        return { contents: code, loader };
       });
 
       if (extractCss) {
