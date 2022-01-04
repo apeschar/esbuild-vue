@@ -24,8 +24,14 @@ editModule("fs", (fs) => {
 });
 
 const componentCompiler = require("@vue/component-compiler");
-
 const generateCodeFrame = require("vue-template-compiler").generateCodeFrame;
+
+// We use our own versions of compileToDescriptor until this PR is merged:
+// https://github.com/vuejs/vue-component-compiler/pull/122
+const {
+  compileToDescriptor,
+  compileToDescriptorAsync,
+} = require("./compiler.js");
 
 module.exports = async ({
   filename,
@@ -52,8 +58,8 @@ module.exports = async ({
       throw new Error("File is empty");
     }
     const result = isAsync
-      ? await compiler.compileToDescriptorAsync(filename, source)
-      : compiler.compileToDescriptor(filename, source);
+      ? await compileToDescriptorAsync.call(compiler, filename, source)
+      : compileToDescriptor.call(compiler, filename, source);
     let styles;
 
     const resultErrors = getErrors(result);
