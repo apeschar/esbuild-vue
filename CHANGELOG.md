@@ -1,5 +1,11 @@
 # Change log
 
+## 1.1.0 - 2022-01-04
+
+- Add support for TypeScript via `<script lang="ts">`.
+- Strip comments from `<script>` contents to prevent commented `export default`
+  declaration from triggering errors.
+
 ## 1.0.0 - 2021-11-25
 
 - Add support for PostCSS plugins.
