@@ -149,3 +149,13 @@ test("expects TypeScript to be properly loaded", async () => {
     /function\s+test\(\)\s*{/
   );
 });
+
+test("expects commented default export to be handled properly", async () => {
+  const result = await require("esbuild").build({
+    entryPoints: ["test/input/CommentedDefaultExport.vue"],
+    plugins: [require("../src/index.js")()],
+    write: false,
+  });
+
+  expect(result.outputFiles).toHaveLength(1);
+});
