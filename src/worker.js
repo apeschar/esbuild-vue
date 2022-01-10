@@ -25,7 +25,6 @@ editModule("fs", (fs) => {
 
 const componentCompiler = require("@vue/component-compiler");
 const generateCodeFrame = require("vue-template-compiler").generateCodeFrame;
-const stripComments = require("strip-comments");
 
 // We use our own versions of compileToDescriptor until this PR is merged:
 // https://github.com/vuejs/vue-component-compiler/pull/122
@@ -75,10 +74,6 @@ module.exports = async ({
       for (const style of result.styles) {
         style.code = "";
       }
-    }
-
-    if (result.script) {
-      result.script.code = stripComments(result.script.code);
     }
 
     const { code } = componentCompiler.assemble(compiler, source, result, {});
