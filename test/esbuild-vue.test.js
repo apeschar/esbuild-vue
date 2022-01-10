@@ -159,3 +159,11 @@ test("expects commented default export to be handled properly", async () => {
 
   expect(result.outputFiles).toHaveLength(1);
 });
+
+test("expects comments in strings not to be removed", async () => {
+  await require("esbuild").build({
+    entryPoints: ["test/input/CommentInString.vue"],
+    plugins: [require("../src/index.js")()],
+    write: false,
+  });
+});
