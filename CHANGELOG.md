@@ -1,5 +1,11 @@
 # Change log
 
+## 1.1.1 - 2022-01-10
+
+- Don't strip comments from `<script>` contents. This will cause errors when you
+  have `export default` in a comment, but this needs to be fixed in the Vue
+  compiler.
+
 ## 1.1.0 - 2022-01-04
 
 - Add support for TypeScript via `<script lang="ts">`.
