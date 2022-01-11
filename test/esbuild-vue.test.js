@@ -9,9 +9,10 @@ test("expects importing Vue SFC to work", async () => {
   });
 
   expect(result.outputFiles).toHaveLength(1);
-  expect(String.fromCodePoint(...result.outputFiles[0].contents)).toContain(
-    "Hello, World!"
-  );
+
+  const src = String.fromCodePoint(...result.outputFiles[0].contents);
+  expect(src).toContain("Hello, World!");
+  expect(src).toContain('__file = "test/input/MyComponent.vue"');
 });
 
 test("expects CSS to be extracted", async () => {

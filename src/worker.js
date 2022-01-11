@@ -76,7 +76,7 @@ module.exports = async ({
       }
     }
 
-    const { code } = componentCompiler.assemble(compiler, source, result, {});
+    const { code } = componentCompiler.assemble(compiler, filename, result, {});
 
     return {
       code,

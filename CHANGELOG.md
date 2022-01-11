@@ -1,5 +1,10 @@
 # Change log
 
+## 1.1.2 - 2022-01-11
+
+- Cause `component.__file` to contain the filename of the `*.vue` file, instead
+  of its contents.
+
 ## 1.1.1 - 2022-01-10
 
 - Don't strip comments from `<script>` contents. This will cause errors when you
