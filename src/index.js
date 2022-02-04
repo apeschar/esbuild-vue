@@ -13,6 +13,7 @@ module.exports = function ({
   onReadFile,
   postcssPlugins = [],
   isAsync = false,
+  assembleOptions = {},
 } = {}) {
   let runTask;
 
@@ -45,6 +46,7 @@ module.exports = function ({
           production,
           postcssPlugins,
           isAsync,
+          assembleOptions,
         });
 
         if (extractCss && styles && styles.length) {
