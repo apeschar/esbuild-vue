@@ -92,7 +92,9 @@ The following options are available:
 - `onReadFile`: Will be called with the (non-normalized) paths of every file read during the compilation process. For example, external files included using `@import` declarations in `<style>` blocks.
 - `postcssPlugins`: PostCSS plugins which will be used when compiling `<style>` blocks in components.
 - `isAsync`: By default, components are compiled using the synchronous (non-async) compiler. If you use async PostCSS plugins, you need to specify `true` here.
+- `assembleOptions`: Allows to provide custom `normalizer`, `styleInjector` and `styleInjectorSSR` implementations ([upstream docs][vcc])
 
 [sfc]: https://vuejs.org/v2/guide/single-file-components.html
 [esbuild]: https://esbuild.github.io/
 [piscina]: https://www.npmjs.com/package/piscina
+[vcc]: https://github.com/vuejs/vue-component-compiler/tree/v4.2.4#handling-the-output

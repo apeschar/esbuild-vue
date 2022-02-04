@@ -41,6 +41,7 @@ module.exports = async ({
   production,
   postcssPlugins,
   isAsync,
+  assembleOptions,
 }) => {
   const compilerOptions = {
     template: {
@@ -76,7 +77,12 @@ module.exports = async ({
       }
     }
 
-    const { code } = componentCompiler.assemble(compiler, filename, result, {});
+    const { code } = componentCompiler.assemble(
+      compiler,
+      filename,
+      result,
+      assembleOptions
+    );
 
     return {
       code,

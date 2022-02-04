@@ -15,6 +15,27 @@ test("expects importing Vue SFC to work", async () => {
   expect(src).toContain('__file = "test/input/MyComponent.vue"');
 });
 
+test("expects to allow custom normalizer", async () => {
+  const result = await require("esbuild").build({
+    bundle: true,
+    format: "esm",
+    external: ["custom-normalizer"],
+    entryPoints: ["test/input/main.js"],
+    plugins: [
+      require("../src/index.js")({
+        assembleOptions: { normalizer: "~custom-normalizer" },
+      }),
+    ],
+    write: false,
+  });
+
+  expect(result.outputFiles).toHaveLength(1);
+
+  const src = String.fromCodePoint(...result.outputFiles[0].contents);
+  expect(src).toContain('import __vue_normalize__ from "custom-normalizer"');
+  expect(src).toContain("Hello, World!");
+});
+
 test("expects CSS to be extracted", async () => {
   const result = await require("esbuild").build({
     bundle: true,
