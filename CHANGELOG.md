@@ -1,5 +1,9 @@
 # Change log
 
+## 1.2.0 - 2022-02-04
+
+- Add support for `assembleOptions`.
+
 ## 1.1.2 - 2022-01-11
 
 - Cause `component.__file` to contain the filename of the `*.vue` file, instead
