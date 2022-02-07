@@ -87,7 +87,7 @@ module.exports = async ({
       code,
       styles,
       usedFiles,
-      loader: result.script?.lang,
+      loader: result.script ? result.script.lang : undefined,
     };
   } catch (e) {
     return {
