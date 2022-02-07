@@ -10,6 +10,10 @@ watch :
 	git ls-files | entr -r -c $(MAKE) -s test
 .PHONY : watch
 
+lint : node_modules
+	node_modules/.bin/eslint src
+.PHONY : lint
+
 node_modules : yarn.lock
 	yarn
 	touch $@
