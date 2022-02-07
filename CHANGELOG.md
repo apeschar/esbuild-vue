@@ -1,5 +1,9 @@
 # Change log
 
+## 1.2.1 - 2022-02-07
+
+- Remove use of optional chaining operator in order to support Node.js 12.
+
 ## 1.2.0 - 2022-02-04
 
 - Add support for `assembleOptions`.
