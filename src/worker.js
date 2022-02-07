@@ -36,7 +36,6 @@ const {
 module.exports = async ({
   filename,
   source,
-  trackUsedFiles,
   extractCss,
   production,
   postcssPlugins,
