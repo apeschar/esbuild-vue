@@ -14,6 +14,7 @@ module.exports = function ({
   postcssPlugins = [],
   isAsync = false,
   assembleOptions = {},
+  createCompilerOption = {}
 } = {}) {
   let runTask;
 
@@ -47,6 +48,7 @@ module.exports = function ({
           postcssPlugins,
           isAsync,
           assembleOptions,
+          createCompilerOption,
         });
 
         if (extractCss && styles && styles.length) {
