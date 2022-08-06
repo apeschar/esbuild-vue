@@ -41,14 +41,20 @@ module.exports = async ({
   postcssPlugins,
   isAsync,
   assembleOptions,
+  createCompilerOption,
 }) => {
   const compilerOptions = {
     template: {
+      ...createCompilerOption.template,
       isProduction: production,
       compilerOptions: { outputSourceRange: true },
     },
     style: {
+      ...createCompilerOption.style,
       postcssPlugins,
+    },
+    script: {
+      ...createCompilerOption.script
     },
   };
   const compiler = componentCompiler.createDefaultCompiler(compilerOptions);
