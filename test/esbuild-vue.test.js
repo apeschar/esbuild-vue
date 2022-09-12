@@ -54,6 +54,27 @@ test("expects CSS to be extracted", async () => {
   expect(css).toContain(".Hello[data-v-");
 });
 
+test("expects relative URLs in extracted CSS to be resolved", async () => {
+  const result = await require("esbuild").build({
+    bundle: true,
+    entryPoints: ["test/input/RelativeUrl.vue"],
+    plugins: [
+      require("../src/index.js")({
+        extractCss: true,
+      }),
+    ],
+    write: false,
+    loader: { ".jpg": "dataurl" },
+    outdir: "test/output",
+  });
+
+  expect(result.outputFiles).toHaveLength(2);
+
+  expect(result.outputFiles[1].path).toMatch(/\.css$/);
+  const css = String.fromCodePoint(...result.outputFiles[1].contents);
+  expect(css).toContain("data:");
+});
+
 test("expects importing SFCs with syntax errors to fail", async () => {
   await expect(
     require("esbuild").build({

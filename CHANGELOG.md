@@ -1,5 +1,9 @@
 # Change log
 
+## 1.2.2 - 2022-09-12
+
+- Set `resolveDir` for extracted CSS so that relative URLs work.
+
 ## 1.2.1 - 2022-02-07
 
 - Remove use of optional chaining operator in order to support Node.js 12.

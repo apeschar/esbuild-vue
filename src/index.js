@@ -1,4 +1,4 @@
-const { resolve, relative } = require("path");
+const { resolve, relative, dirname } = require("path");
 const fs = require("fs");
 const escapeRegExp = require("lodash.escaperegexp");
 
@@ -83,7 +83,7 @@ module.exports = function ({
             if (!css) {
               return null;
             }
-            return { contents: css, loader: "css" };
+            return { contents: css, loader: "css", resolveDir: dirname(path) };
           }
         );
       }
