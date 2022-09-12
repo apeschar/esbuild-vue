@@ -15,5 +15,5 @@ lint : node_modules
 .PHONY : lint
 
 node_modules : yarn.lock
-	yarn
+	yarn --pure-lockfile
 	touch $@
