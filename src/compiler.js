@@ -1,4 +1,4 @@
-const { parse } = require("@vue/component-compiler-utils");
+const { parse } = require("@vue/compiler-sfc");
 const templateCompiler = require("vue-template-compiler");
 const hash = require("hash-sum");
 const path = require("path");
